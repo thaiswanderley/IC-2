@@ -1,0 +1,195 @@
+import pandas as pd 
+import numpy as np 
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import sklearn 
+import tensorflow 
+
+#seed
+np.random.seed(42)
+
+#Download MNIST dataset
+from tensorflow import keras
+mnist = keras.datasets.mnist
+(X_train_full, y_train_full), (X_test, y_test) = mnist.load_data()
+
+#Data info
+print(X_train_full.shape)
+print(X_train_full.dtype)
+
+#Plot an image
+plt.imshow(X_train_full[0], cmap="binary")
+plt.axis('off')
+plt.show()
+
+#Convert 28x28 image to 28x28x1 size
+X_train_full = X_train_full.reshape(-1,28,28,1)
+X_test = X_test.reshape(-1,28,28,1)
+
+#Convert data type
+X_train_full = X_train_full.astype('float32')
+X_test = X_test.astype('float32')
+
+#Normalize data
+X_train_full = X_train_full / 255.
+X_test = X_test / 255.
+
+#Traning the model using cross validation 
+
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold
+
+accuracy_fold = []
+loss_fold = []
+
+skfolds = StratifiedKFold(n_splits=3, shuffle = True)
+for train_index, test_index in skfolds.split(X_train_full,y_train_full):
+  X_train_folds, y_train_folds = X_train_full[train_index], y_train_full[train_index]
+  X_test_fold, y_test_fold = X_train_full[test_index], y_train_full[test_index]
+    
+  #Define CNN Architectures
+  model = Sequential()
+  model.add(Conv2D(filters=64, kernel_size=(7,7), padding = "same", input_shape=(28, 28, 1)))
+  model.add(MaxPooling2D(pool_size=(2,2)))
+  model.add(Conv2D(filters=128,kernel_size=(3,3), padding = "same"))
+  model.add(MaxPooling2D(pool_size=(2,2)))
+  model.add(Conv2D(filters=256,kernel_size=(3,3), padding = "same"))
+  model.add(MaxPooling2D(pool_size=(2,2)))
+  model.add(Flatten())
+  model.add(Dense(units=128, activation='relu'))
+  model.add(Dense(units=64, activation='relu'))
+  model.add(Dropout(0.5))
+  model.add(Dense(units=10, activation='softmax'))
+            
+  #Compile the model
+  model.compile(loss="sparse_categorical_crossentropy", optimizer="adam",
+              metrics=["accuracy"])
+    
+  #Fit data to model   
+  model.fit(X_train_folds, y_train_folds, batch_size=32, epochs=10)
+
+  #Evaluation
+  scores = model.evaluate(X_test_fold, y_test_fold)
+  accuracy_fold.append(scores[1])
+  loss_fold.append(scores[0])
+print('Accuracy:', np.mean(accuracy_fold))
+print('Loss:', np.mean(loss_fold))
+
+
+#Vary the number of training epochs 
+accuracy_epochs = []
+loss_epochs = []
+ep= list(range(1,6))
+
+for e in epochs:
+  print(ep
+  skfolds = StratifiedKFold(n_splits=3, shuffle = True)
+  for train_index, test_index in skfolds.split(X_train_full,y_train_full):
+    X_train_folds, y_train_folds = X_train_full[train_index], y_train_full[train_index]
+    X_test_fold, y_test_fold = X_train_full[test_index], y_train_full[test_index]
+    
+    #Define CNN Architectures
+    model = Sequential()
+    model.add(Conv2D(filters=64, kernel_size=(7,7), padding = "same", input_shape=(28, 28, 1)))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Conv2D(filters=128,kernel_size=(3,3), padding = "same"))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Conv2D(filters=256,kernel_size=(3,3), padding = "same"))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    model.add(Flatten())
+    model.add(Dense(units=128, activation='relu'))
+    model.add(Dense(units=64, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(units=10, activation='softmax'))
+            
+    #Compile the model
+    model.compile(loss="sparse_categorical_crossentropy", optimizer="adam",
+                metrics=["accuracy"])
+      
+    #Fit data to model   
+    model.fit(X_train_folds, y_train_folds, batch_size=32, epochs=ep)
+
+    #Evaluation
+    scores = model.evaluate(X_test_fold, y_test_fold)
+    accuracy_epochs.append(scores[1])
+    loss_epochs.append(scores[0])
+
+#Epochs necessary to reach the maximum value
+accuracy_it = []
+loss_it = []
+ep = 1
+it = 1
+
+print(ep)
+print(it)
+skfolds = StratifiedKFold(n_splits=3, shuffle = True)
+for train_index, test_index in skfolds.split(X_train_full,y_train_full):
+  X_train_folds, y_train_folds = X_train_full[train_index], y_train_full[train_index]
+  X_test_fold, y_test_fold = X_train_full[test_index], y_train_full[test_index]
+    
+  #Define CNN Architectures
+  model = Sequential()
+  model.add(Conv2D(filters=64, kernel_size=(7,7), padding = "same", input_shape=(28, 28, 1)))
+  model.add(MaxPooling2D(pool_size=(2,2)))
+  model.add(Conv2D(filters=128,kernel_size=(3,3), padding = "same"))
+  model.add(MaxPooling2D(pool_size=(2,2)))
+  model.add(Conv2D(filters=256,kernel_size=(3,3), padding = "same"))
+  model.add(MaxPooling2D(pool_size=(2,2)))
+  model.add(Flatten())
+  model.add(Dense(units=128, activation='relu'))
+  model.add(Dense(units=64, activation='relu'))
+  model.add(Dropout(0.5))
+  model.add(Dense(units=10, activation='softmax'))
+            
+  #Compile the model
+  model.compile(loss="sparse_categorical_crossentropy", optimizer="adam",
+                metrics=["accuracy"])
+      
+  #Fit data to model   
+  model.fit(X_train_folds, y_train_folds, batch_size=32, epochs=ep)
+
+  #Evaluation
+  scores = model.evaluate(X_test_fold, y_test_fold)
+  accuracy_it.append(scores[1])
+  loss_it.append(scores[0])
+
+  #Increase epochs and iterations
+  ep = ep+1
+  it = it+1
+
+#Evaluate the model on the test set
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold
+
+accuracy = []
+loss = []
+  
+#Define CNN Architectures
+model = Sequential()
+model.add(Conv2D(filters=64, kernel_size=(7,7), padding = "same", input_shape=(28, 28, 1)))
+model.add(MaxPooling2D(pool_size=(2,2)))
+model.add(Conv2D(filters=128,kernel_size=(3,3), padding = "same"))
+model.add(MaxPooling2D(pool_size=(2,2)))
+model.add(Conv2D(filters=256,kernel_size=(3,3), padding = "same"))
+model.add(MaxPooling2D(pool_size=(2,2)))
+model.add(Flatten())
+model.add(Dense(units=128, activation='relu'))
+model.add(Dense(units=64, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(units=10, activation='softmax'))
+            
+#Compile the model
+model.compile(loss="sparse_categorical_crossentropy", optimizer="adam",
+              metrics=["accuracy"])
+    
+#Fit data to model   
+model.fit(X_test, y_test, batch_size=32, epochs=10)
+
+#Evaluation
+scores = model.evaluate(X_test, y_test)
+accuracy.append(scores[1])
+loss.append(scores[0])
