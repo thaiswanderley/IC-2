@@ -1,0 +1,567 @@
+import pandas as pd 
+import numpy as np 
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import sklearn
+
+#seed
+np.random.seed(42)
+
+#Load the data
+with open('C:/Users/thais/Documents/banana.txt','r') as f:
+        dataset = pd.read_csv(f)
+print(dataset)
+
+#Dataset info
+dataset.info()
+
+# Scatter plot of the dataset
+colors = dataset['class']
+plt.scatter(dataset['at1'],dataset['at2'], c=colors)
+plt.title('Scatter plot of the dataset')
+plt.savefig('dataset.png', format='png')
+plt.show()
+
+#Create a test set: 20% of the dataset
+from sklearn.model_selection import train_test_split
+
+dataset_copy = dataset.copy()
+train_set, test_set = train_test_split(dataset_copy, test_size=0.2, random_state=42)
+
+# Training and evaluating SVM models using Cross-Validation
+#SVM: Sigmoid Kernel: coef=1
+# 3-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+sigmoid_svm = SVC(kernel="sigmoid", coef0=1, C=0.01)
+
+scores_sig1_3k = []
+skfolds = StratifiedKFold(n_splits=3, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]
+    clone_sigmoid_svm = clone(sigmoid_svm)
+    clone_sigmoid_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_sigmoid_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_sig1_3k.append(E_out)
+    
+print(scores_sig1_3k)
+
+#SVM: Sigmoid Kernel: coef=1
+# 5-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+sigmoid_svm = SVC(kernel="sigmoid", coef0=1, C=0.01)
+
+scores_sig1_5k = []
+skfolds = StratifiedKFold(n_splits=5, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_sigmoid_svm = clone(sigmoid_svm)
+    clone_sigmoid_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_sigmoid_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_sig1_5k.append(E_out)
+print(scores_sig1_5k)
+
+#SVM: Sigmoid Kernel: coef=1
+# 10-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+sigmoid_svm = SVC(kernel="sigmoid", coef0=1, C=0.01)
+
+scores_sig1_10k = []
+skfolds = StratifiedKFold(n_splits=10, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_sigmoid_svm = clone(sigmoid_svm)
+    clone_sigmoid_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_sigmoid_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_sig1_10k.append(E_out)
+print(scores_sig1_10k)
+
+#SVM: Sigmoid Kernel: coef=0.5
+# 3-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+sigmoid_svm = SVC(kernel="sigmoid", coef0=0.5, C=0.01)
+
+scores_sig05_3k = []
+skfolds = StratifiedKFold(n_splits=3, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_sigmoid_svm = clone(sigmoid_svm)
+    clone_sigmoid_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_sigmoid_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_sig05_3k.append(E_out)
+print(scores_sig05_3k)
+
+#SVM: Sigmoid Kernel: coef=0.5
+# 5-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+sigmoid_svm = SVC(kernel="sigmoid", coef0=0.5, C=0.01)
+
+scores_sig05_5k = []
+skfolds = StratifiedKFold(n_splits=5, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_sigmoid_svm = clone(sigmoid_svm)
+    clone_sigmoid_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_sigmoid_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_sig05_5k.append(E_out)
+print(scores_sig05_5k)
+
+#SVM: Sigmoid Kernel: coef=0.5
+# 10-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+sigmoid_svm = SVC(kernel="sigmoid", coef0=0.5, C=0.01)
+
+scores_sig05_10k = []
+skfolds = StratifiedKFold(n_splits=10, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_sigmoid_svm = clone(sigmoid_svm)
+    clone_sigmoid_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_sigmoid_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_sig05_10k.append(E_out)
+print(scores_sig05_10k)
+
+#SVM: Sigmoid Kernel: coef=0.01
+# 3-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+sigmoid_svm = SVC(kernel="sigmoid", coef0=0.01, C=0.01)
+
+scores_sig001_3k = []
+skfolds = StratifiedKFold(n_splits=3, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_sigmoid_svm = clone(sigmoid_svm)
+    clone_sigmoid_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_sigmoid_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_sig001_3k.append(E_out)
+print(scores_sig001_3k)
+
+#SVM: Sigmoid Kernel: coef=0.01
+# 5-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+sigmoid_svm = SVC(kernel="sigmoid", coef0=0.01, C=0.01)
+
+scores_sig001_5k = []
+skfolds = StratifiedKFold(n_splits=5, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_sigmoid_svm = clone(sigmoid_svm)
+    clone_sigmoid_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_sigmoid_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_sig001_5k.append(E_out)
+print(scores_sig001_5k)
+
+#SVM: Sigmoid Kernel: coef=0.01
+# 10-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+sigmoid_svm = SVC(kernel="sigmoid", coef0=0.01, C=0.01)
+
+scores_sig001_10k = []
+skfolds = StratifiedKFold(n_splits=10, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_sigmoid_svm = clone(sigmoid_svm)
+    clone_sigmoid_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_sigmoid_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_sig001_10k.append(E_out)
+print(scores_sig001_10k)
+
+#SVM: Linear Kernel
+# 3-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+linear_svm = SVC(kernel="linear", C=0.01)
+
+scores_lin_3k = []
+skfolds = StratifiedKFold(n_splits=3, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_linear_svm = clone(linear_svm)
+    clone_linear_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_linear_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_lin_3k.append(E_out)
+print(scores_lin_3k)
+
+#SVM: Linear Kernel
+# 5-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+linear_svm = SVC(kernel="linear", C=0.01)
+
+scores_lin_5k = []
+skfolds = StratifiedKFold(n_splits=5, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_linear_svm = clone(linear_svm)
+    clone_linear_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_linear_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_lin_5k.append(E_out)
+print(scores_lin_5k)
+
+#SVM: Linear Kernel
+# 10-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+linear_svm = SVC(kernel="linear", C=0.01)
+
+scores_lin_10k = []
+skfolds = StratifiedKFold(n_splits=10, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_linear_svm = clone(linear_svm)
+    clone_linear_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_linear_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_lin_10k.append(E_out)
+print(scores_lin_10k)
+
+#SVM: Polynomial Kernel
+# 3-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+poly_svm = SVC(kernel="poly", degree=3, gamma=1.0, C=0.01)
+
+scores_poly_3k = []
+skfolds = StratifiedKFold(n_splits=3, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_poly_svm = clone(poly_svm)
+    clone_poly_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_poly_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_poly_3k.append(E_out)
+print(scores_poly_3k)
+
+#SVM: Polynomial Kernel
+# 5-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+poly_svm = SVC(kernel="poly", degree=3, gamma=1.0, C=0.01)
+
+scores_poly_5k = []
+skfolds = StratifiedKFold(n_splits=5, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_poly_svm = clone(poly_svm)
+    clone_poly_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_poly_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_poly_5k.append(E_out)
+print(scores_poly_5k)
+
+#SVM: Polynomial Kernel
+# 10-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+poly_svm = SVC(kernel="poly", degree=3, gamma=1.0, C=0.01)
+
+scores_poly_10k = []
+skfolds = StratifiedKFold(n_splits=10, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_poly_svm = clone(poly_svm)
+    clone_poly_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_poly_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_poly_10k.append(E_out)
+print(scores_poly_10k)
+
+#SVM: RBF Kernel
+# 3-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+rbf_svm = SVC(kernel="rbf", gamma=1.0, C=0.01)
+
+scores_rbf_3k = []
+skfolds = StratifiedKFold(n_splits=3, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_rbf_svm = clone(rbf_svm)
+    clone_rbf_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_rbf_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_rbf_3k.append(E_out)
+print(scores_rbf_3k)
+
+#SVM: RBF Kernel
+# 5-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+rbf_svm = SVC(kernel="rbf", gamma=1.0, C=0.01)
+
+scores_rbf_5k = []
+skfolds = StratifiedKFold(n_splits=5, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_rbf_svm = clone(rbf_svm)
+    clone_rbf_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_rbf_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_rbf_5k.append(E_out)
+print(scores_rbf_5k)
+
+#SVM: RBF Kernel
+# 10-fold cross validation
+
+from sklearn.model_selection import StratifiedKFold
+from sklearn.svm import SVC
+from sklearn.base import clone
+
+X = train_set.loc[:,'at1':'at2']
+y = train_set['class']
+
+rbf_svm = SVC(kernel="rbf", gamma=1.0, C=0.01)
+
+scores_rbf_10k = []
+skfolds = StratifiedKFold(n_splits=10, shuffle = True)
+for train_index, test_index in skfolds.split(X,y):
+    X_train_folds, y_train_folds = X.iloc[train_index], y.iloc[train_index]
+    X_test_fold, y_test_fold = X.iloc[test_index], y.iloc[test_index]    
+    clone_rbf_svm = clone(rbf_svm)
+    clone_rbf_svm.fit(X_train_folds,y_train_folds)
+    y_pred = clone_rbf_svm.predict(X_test_fold)
+    E_out = np.mean(y_pred!=y_test_fold)
+    scores_rbf_10k.append(E_out)
+print(scores_rbf_10k)
+
+#Table with out of sample erros
+d_3 = {'scores_sig1_3k':scores_sig1_3k, 'scores_sig05_3k': scores_sig05_3k, 'scores_sig001_3k':scores_sig001_3k, 
+     'scores_lin_3k':scores_lin_3k, 'scores_poly_3k':scores_poly_3k, 'scores_rbf_3k':scores_rbf_3k}
+d_5 = {'scores_sig1_5k':scores_sig1_5k, 'scores_sig05_5k': scores_sig05_5k, 'scores_sig001_5k':scores_sig001_5k, 
+     'scores_lin_5k':scores_lin_5k, 'scores_poly_5k':scores_poly_5k, 'scores_rbf_5k':scores_rbf_5k}
+d_10 = {'scores_sig1_10k':scores_sig1_10k, 'scores_sig05_10k': scores_sig05_10k, 'scores_sig001_10k':scores_sig001_10k, 
+     'scores_lin_10k':scores_lin_10k, 'scores_poly_10k':scores_poly_10k, 'scores_rbf_10k':scores_rbf_10k}
+
+tabela = pd.DataFrame(data=d_3).mean().append(pd.DataFrame(data=d_5).mean().append(pd.DataFrame(data=d_10).mean()))
+tabela.sort_values(inplace = True)
+tabela
+
+#Otimization of hyperparameters
+# Best value hyperparameters: SVM with RBF kernel
+from sklearn.model_selection import GridSearchCV
+
+train_set_copy = train_set.copy()
+X_train_copy = train_set_copy.loc[:,'at1':'at2']
+y_train_copy = train_set_copy['class']
+
+param_grid = [
+    {'kernel': ['rbf'], 'C':[0.01, 1.0, 10.0, 100.0, 1000.0],
+    'gamma':[0.001, 0.01, 0.1, 1.0, 5.0]}
+]
+
+svm_clf = SVC()
+grid_search = GridSearchCV(svm_clf, param_grid, cv=10, scoring = "accuracy", return_train_score = True)
+grid_search.fit(X_train_copy,y_train_copy)
+grid_search.best_params_
+
+# Best value hyperparameters: SVM with sigmoid kernel
+from sklearn.model_selection import GridSearchCV
+
+train_set_copy = train_set.copy()
+X_train_copy = train_set_copy.loc[:,'at1':'at2']
+y_train_copy = train_set_copy['class']
+
+param_grid = [
+    {'kernel': ['sigmoid'], 'C':[0.001, 0.01, 1.0, 10.0, 100.0, 1000.0]}
+]
+
+svm_clf = SVC()
+grid_search = GridSearchCV(svm_clf, param_grid, cv=10, scoring = "accuracy", return_train_score = True)
+grid_search.fit(X_train_copy,y_train_copy)
+grid_search.best_params_
+
+# Evaluate the best and the worst models on the test set
+#The best model: SVM with RBF kernel
+from sklearn.svm import SVC
+
+best_model = SVC(kernel="rbf", gamma=1.0, C=10.0)
+
+test_set_copy = test_set.copy()
+X_test = test_set_copy.loc[:,'at1':'at2']
+y_test = test_set_copy['class']
+
+best_model.fit(X_test,y_test)
+y_pred = best_model.predict(X_test)
+E_out = np.mean(y_test!=y_pred)
+print(E_out)
+
+#The worst model: SVM with Sigmoid kernel (value 1)
+from sklearn.svm import SVC
+
+worst_model = SVC(kernel="sigmoid", coef0=1, C=0.001)
+
+test_set_copy = test_set.copy()
+X_test = test_set_copy.loc[:,'at1':'at2']
+y_test = test_set_copy['class']
+
+worst_model.fit(X_test,y_test)
+y_pred = worst_model.predict(X_test)
+E_out = np.mean(y_test!=y_pred)
+print(E_out)
+
+#Graphics
+#SVM RBF Kernel
+def plot_predictions(clf, axes):
+    x0s = np.linspace(axes[0], axes[1], 100)
+    x1s = np.linspace(axes[2], axes[3], 100)
+    x0, x1 = np.meshgrid(x0s, x1s)
+    X = np.c_[x0.ravel(), x1.ravel()]
+    y_pred = clf.predict(X).reshape(x0.shape)
+    y_decision = clf.decision_function(X).reshape(x0.shape)
+    plt.contourf(x0, x1, y_pred, cmap=plt.cm.brg, alpha=0.2)
+    plt.contourf(x0, x1, y_decision, cmap=plt.cm.brg, alpha=0.1)
+
+#Grafico dos vetores de suporte do melhor modelo
+plot_predictions(best_model, [-3.0, 3.0, -3.0, 3.0])
+colors = test_set_copy['class']
+plt.scatter(test_set_copy['at1'],test_set_copy['at2'], c=colors)
+plt.title('Support vectors with RBF kernel/10folds')
+plt.savefig('rbf.png', format='png')
+plt.show()
+
+#SVM Sigmoid Kernel
+#Grafico dos vetores de suporte do pior modelo
+plot_predictions(worst_model, [-3.0, 3.0, -3.0, 3.0])
+colors = test_set_copy['class']
+plt.scatter(test_set_copy['at1'],test_set_copy['at2'], c=colors)
+plt.title('Support vectors with sigmoid 1 kernel/10folds')
+plt.savefig('sigmoid.png', format='png')
+plt.show()
